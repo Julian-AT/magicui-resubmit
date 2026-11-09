@@ -46,11 +46,14 @@ jobs:
           # git through gh, from the environment.
           persist-credentials: false
 
-      - name: Add upstream
+      # Install from upstream main, not the fork's (much older) main, so the
+      # dependencies match what every commit is built on.
+      - name: Add upstream and check out its main
         working-directory: magicui
         run: |
           git remote add upstream https://github.com/magicuidesign/magicui.git
           git fetch --quiet --no-tags upstream main
+          git checkout --quiet --detach upstream/main
 
       - uses: pnpm/action-setup@v4
         with:
