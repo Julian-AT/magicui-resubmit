@@ -1,0 +1,5 @@
+node_modules/
+runs/*/resubmit/*.log
+runs/_resubmit/lock
+runs/_resubmit/notices.txt
+runs/_resubmit/launchd.log

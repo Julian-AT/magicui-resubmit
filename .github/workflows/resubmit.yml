@@ -1,0 +1,114 @@
+name: resubmit
+
+# Daily: open the next MagicUI component PR when a slot is free (see
+# README.md). 09:00 UTC is 10:00 in winter, 11:00 in summer (CET/CEST).
+on:
+  schedule:
+    - cron: "0 9 * * *"
+  workflow_dispatch:
+    inputs:
+      command:
+        description: "tick = the daily run, start = first batch, status, resume"
+        type: choice
+        default: tick
+        options: [tick, start, status, resume]
+      dry_run:
+        description: "Prepare and print, but push nothing and open no PR"
+        type: boolean
+        default: false
+
+concurrency:
+  group: resubmit
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Check out this repo (queue, script, descriptions)
+        uses: actions/checkout@v6
+        with:
+          path: bot
+
+      - name: Check out the fork (closed PR branches stay the source)
+        uses: actions/checkout@v6
+        with:
+          repository: Julian-AT/magicui
+          fetch-depth: 0
+          path: magicui
+          # The token never goes into git config, so install scripts of
+          # upstream's dependencies can't read it. The Run step hands it to
+          # git through gh, from the environment.
+          persist-credentials: false
+
+      - name: Add upstream
+        working-directory: magicui
+        run: |
+          git remote add upstream https://github.com/magicuidesign/magicui.git
+          git fetch --quiet --no-tags upstream main
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+          run_install: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: magicui/pnpm-lock.yaml
+
+      - name: Install
+        run: |
+          npm ci --prefix bot --no-audit --no-fund
+          pnpm --dir magicui install --frozen-lockfile
+
+      - name: Run
+        working-directory: bot
+        env:
+          GH_TOKEN: ${{ secrets.RESUBMIT_TOKEN }}
+          RESUBMIT_WORKTREE: ${{ github.workspace }}/magicui
+          COMMAND: ${{ inputs.command || 'tick' }}
+          DRY_RUN: ${{ inputs.dry_run && 'yes' || '' }}
+        run: |
+          gh auth setup-git --hostname github.com
+          node --disable-warning=ExperimentalWarning harness/scripts/resubmit.ts "$COMMAND" ${DRY_RUN:+--dry-run}
+
+      - name: Save the queue
+        if: always()
+        working-directory: bot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state runs
+          if ! git diff --cached --quiet; then
+            git commit --quiet -m "chore: resubmit run $(date -u +%F)"
+            git pull --quiet --rebase
+            git push --quiet
+          fi
+
+      - name: Notify
+        if: always()
+        working-directory: bot
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          f=runs/_resubmit/notices.txt
+          [ -s "$f" ] || exit 0
+          n=$(gh issue list --state open --search "Resubmit notifications in:title" --json number --jq '.[0].number // empty')
+          if [ -z "$n" ]; then
+            n=$(gh issue create --title "Resubmit notifications" --body "The daily resubmit run comments here when it opens a PR or needs you." | grep -o '[0-9]*$')
+          fi
+          gh issue comment "$n" --body-file "$f"
+
+      - name: Keep the build logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs
+          path: bot/runs/*/resubmit/*.log
