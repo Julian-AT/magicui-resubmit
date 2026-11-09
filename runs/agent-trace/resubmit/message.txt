@@ -1,0 +1,5 @@
+feat(agent-trace): add agent-trace component
+
+Add AgentTrace with 3 demos, a docs page and sidebar entry, its registry
+entries, its keyframes in globals.css and a listing in the magic-ui
+skill.

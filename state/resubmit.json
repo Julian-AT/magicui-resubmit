@@ -5,17 +5,29 @@
     {
       "slug": "agent-trace",
       "oldPr": 1054,
-      "status": "queued"
+      "status": "open",
+      "head": "20752e436c3c2e7384b7f54de0bd482ea8314298",
+      "base": "1ac985adca3cdfab9b1739253fd14209687c4e9c",
+      "pr": 1068,
+      "openedAt": "2026-11-09T15:08:17.450Z"
     },
     {
       "slug": "ink-reveal",
       "oldPr": 1058,
-      "status": "queued"
+      "status": "open",
+      "head": "4892cf41e915734695b700ab5050d07a5a13a610",
+      "base": "1ac985adca3cdfab9b1739253fd14209687c4e9c",
+      "pr": 1069,
+      "openedAt": "2026-11-09T15:10:45.025Z"
     },
     {
       "slug": "morph-mask",
       "oldPr": 1065,
-      "status": "queued"
+      "status": "open",
+      "head": "92e9b4fdc08f7ccc63f90bba45e97acf5704f06d",
+      "base": "1ac985adca3cdfab9b1739253fd14209687c4e9c",
+      "pr": 1071,
+      "openedAt": "2026-11-09T15:13:08.763Z"
     },
     {
       "slug": "keycap-sequence",

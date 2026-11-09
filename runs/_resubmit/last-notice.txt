@@ -1,1 +1,1 @@
-Could not open agent-trace: pnpm build:registry failed; see /home/runner/work/magicui-resubmit/magicui-resubmit/bot/runs/agent-trace/resubmit/build-registry.log. Log: runs/agent-trace/resubmit/
+Opened #1071: feat(morph-mask): add morph-mask component

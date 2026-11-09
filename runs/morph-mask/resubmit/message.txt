@@ -1,0 +1,4 @@
+feat(morph-mask): add morph-mask component
+
+Add MorphMask with 3 demos, a docs page and sidebar entry, its registry
+entries and a listing in the magic-ui skill.
