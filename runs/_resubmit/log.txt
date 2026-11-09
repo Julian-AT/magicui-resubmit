@@ -1,0 +1,2 @@
+2026-11-09T15:02:11.059Z Could not open agent-trace: pnpm build:registry failed; see /home/runner/work/magicui-resubmit/magicui-resubmit/bot/runs/agent-trace/resubmit/build-registry.log. Log: runs/agent-trace/resubmit/
+2026-11-09T15:02:11.060Z error: pnpm build:registry failed; see /home/runner/work/magicui-resubmit/magicui-resubmit/bot/runs/agent-trace/resubmit/build-registry.log
