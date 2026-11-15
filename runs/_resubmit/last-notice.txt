@@ -1,1 +1,1 @@
-Opened #1071: feat(morph-mask): add morph-mask component
+Paused: #1069 (ink-reveal) closed without merging. Read the thread, then run: resubmit.ts resume

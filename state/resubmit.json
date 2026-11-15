@@ -1,6 +1,9 @@
 {
   "maxOpen": 3,
-  "paused": null,
+  "paused": {
+    "reason": "#1069 (ink-reveal) closed without merging. Read the thread, then run: resubmit.ts resume",
+    "at": "2026-11-15T15:58:30.985Z"
+  },
   "items": [
     {
       "slug": "agent-trace",
@@ -14,11 +17,12 @@
     {
       "slug": "ink-reveal",
       "oldPr": 1058,
-      "status": "open",
+      "status": "closed",
       "head": "4892cf41e915734695b700ab5050d07a5a13a610",
       "base": "1ac985adca3cdfab9b1739253fd14209687c4e9c",
       "pr": 1069,
-      "openedAt": "2026-11-09T15:10:45.025Z"
+      "openedAt": "2026-11-09T15:10:45.025Z",
+      "closedAt": "2026-11-15T04:06:43Z"
     },
     {
       "slug": "morph-mask",
